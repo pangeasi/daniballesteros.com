@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useIsHeader } from "../../hooks/useIsHeader";
 import { useWindowScroll } from "react-use";
+import styles from '../../styles/Home.module.scss'
 
 const menus = [
   {
@@ -25,7 +26,7 @@ export const Header = () => {
   const isSmallHeader = y > 50;
   return (
     <Flex
-      className={isSmallHeader ? "smallHeader" : "header"}
+      className={isSmallHeader ? styles.smallHeader : styles.header}
       justifyContent="space-between"
     >
       <Box>
@@ -33,7 +34,7 @@ export const Header = () => {
           <a>
             <Logo
               size={isSmallHeader ? 40 : 100}
-              color={isHeader && !isSmallHeader ? "#ffffff" : "#0b373a"}
+              color={isHeader && !isSmallHeader ? "#0b373a" : "#0b373a"}
             />
           </a>
         </Link>

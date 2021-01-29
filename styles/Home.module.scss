@@ -21,17 +21,11 @@
   z-index: 999;
 }
 
-a,
-a:visited {
-  color: #0b373a;
-  text-decoration: none;
-}
-
-a,
-a:visited.header-anchor {
-  color: white;
-}
-
 .parallax {
   margin: 0;
+}
+
+
+.header-anchor {
+  color: white;
 }

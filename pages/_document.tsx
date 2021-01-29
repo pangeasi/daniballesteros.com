@@ -1,4 +1,4 @@
-import Document, { Head, Main, NextScript } from "next/document";
+import Document, { Head, Html, Main, NextScript } from "next/document";
 import { extractCritical } from "bumbag-server";
 import { InitializeColorMode } from "bumbag";
 export default class MyDocument extends Document {
@@ -20,14 +20,14 @@ export default class MyDocument extends Document {
   }
   render() {
     return (
-      <html>
+      <Html>
         <Head />
         <body>
           <InitializeColorMode />
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

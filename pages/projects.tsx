@@ -45,6 +45,13 @@ const projects = [
     cover: "icemdtv.png",
     url: "https://github.com/bulbrange/goToShirt",
   },
+  {
+    title: "Baden Baden",
+    description:
+      "Elena y Sergio me encargador una web estática que les sirviera como escaparate para su marca, tienen un negocio te reparto a domicilio de comida 100% productos alemanes de calidad. Desarrollada en Next.js",
+    cover: "badenbaden.png",
+    url: "https://badenbadencorner.com/",
+  },
 ];
 
 const About = () => {
@@ -55,27 +62,28 @@ const About = () => {
         Proyectos realizados
       </Heading>
       {projects.map((project) => (
-        <Group
-          verticalBelow="tablet"
-          gap="0.5rem"
-          altitude="400"
-          marginBottom="2rem"
-          key={project.title}
-        >
-          <Box
-            {...{ minWidth: size ? null : "350px" }}
-            minHeight="180px"
-            backgroundSize="cover"
-            backgroundRepeat="no-repeat"
-            backgroundImage={`url(images/projects/${project.cover})`}
-          />
-          <Box padding="0.5rem">
-            <Heading use="h3" fontSize="300" marginY="0.6rem">
-              {project.title}
-            </Heading>
-            {project.description}
-          </Box>
-        </Group>
+        <a href={project.url} key={project.title} target="blank">
+          <Group
+            verticalBelow="tablet"
+            gap="0.5rem"
+            altitude="400"
+            marginBottom="2rem"
+          >
+            <Box
+              {...{ minWidth: size ? null : "350px" }}
+              minHeight="180px"
+              backgroundSize="cover"
+              backgroundRepeat="no-repeat"
+              backgroundImage={`url(images/projects/${project.cover})`}
+            />
+            <Box padding="0.5rem">
+              <Heading use="h3" fontSize="300" marginY="0.6rem">
+                {project.title}
+              </Heading>
+              {project.description}
+            </Box>
+          </Group>
+        </a>
       ))}
     </Layout>
   );

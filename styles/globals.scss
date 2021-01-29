@@ -20,3 +20,13 @@ html {
   font-family: "Montserrat-Bold";
   src: url(/fonts/Montserrat-Bold.ttf);
 }
+
+a,
+a:visited {
+  color: #0b373a;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #20767c;
+}
