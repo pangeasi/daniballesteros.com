@@ -43,12 +43,12 @@ const projects = [
     description:
       "Actualmente estoy desarrollando junto a mi equipo la plataforma de cursos online para ICEMD, se trata de una aplicación para consumir videos bajo demanda. Desarrollada en Angular.js y NodeJS junto con mongoDB y Firebase",
     cover: "icemdtv.png",
-    url: "https://github.com/bulbrange/goToShirt",
+    url: "#",
   },
   {
     title: "Baden Baden",
     description:
-      "Elena y Sergio me encargador una web estática que les sirviera como escaparate para su marca, tienen un negocio te reparto a domicilio de comida 100% productos alemanes de calidad. Desarrollada en Next.js",
+      "Elena y Sergio me encargador una web estática que les sirviera como escaparate para su marca, tienen un negocio de reparto a domicilio de comida alemana. Desarrollada en Next.js",
     cover: "badenbaden.png",
     url: "https://badenbadencorner.com/",
   },
