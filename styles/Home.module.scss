@@ -1,0 +1,37 @@
+@keyframes pulse {
+  0% {
+    background: #ffffff00;
+  }
+  100% {
+    background: rgba(255, 255, 255, 0.89);
+  }
+}
+
+.smallHeader {
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  animation: pulse 2s;
+  height: 38px;
+  animation-fill-mode: forwards;
+}
+.header {
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+}
+
+a,
+a:visited {
+  color: #0b373a;
+  text-decoration: none;
+}
+
+a,
+a:visited.header-anchor {
+  color: white;
+}
+
+.parallax {
+  margin: 0;
+}
