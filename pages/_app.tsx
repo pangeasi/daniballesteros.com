@@ -1,7 +1,6 @@
 import "../styles/globals.scss";
 import { Provider as BumbagProvider, ThemeConfig, ToastManager } from "bumbag";
 import { faLaptopCode } from "@fortawesome/free-solid-svg-icons";
-import { ParallaxProvider } from "react-scroll-parallax";
 
 const theme: ThemeConfig = {
   Heading: {
@@ -23,10 +22,8 @@ const theme: ThemeConfig = {
 const MyApp = ({ Component, pageProps }) => {
   return (
     <BumbagProvider theme={theme} isSSR>
-      <ParallaxProvider>
         <Component {...pageProps} />
         <ToastManager />
-      </ParallaxProvider>
     </BumbagProvider>
   );
 };

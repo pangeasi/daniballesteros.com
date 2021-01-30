@@ -1,14 +1,12 @@
-import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import { Layout } from "../components/layout/Layout";
 import { Flex, Card, Box } from "bumbag";
-import { Logo } from "../components/svgs/Logo";
 
 export default function Home() {
   return (
     <Layout>
-      <Box>
-        <Card marginBottom="200px" maxWidth="700px">
+      <Box maxWidth="700px">
+        <Card marginBottom="200px" >
           <Card.Header>
             <Card.Title>¿Quién soy?</Card.Title>
           </Card.Header>

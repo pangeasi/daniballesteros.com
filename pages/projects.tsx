@@ -1,13 +1,9 @@
 import { Layout } from "../components/layout/Layout";
 import {
   Box,
-  Flex,
-  Icon,
   Heading,
   Group,
-  Image,
-  useBreakpoint,
-  useBreakpointValue,
+  useBreakpoint
 } from "bumbag";
 
 const projects = [

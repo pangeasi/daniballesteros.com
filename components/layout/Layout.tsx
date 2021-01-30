@@ -15,7 +15,7 @@ export const Layout = ({ children }) => {
           <title>Dani Ballesteros - Desarrollador web</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <Box padding="0.5rem">
+        <Box padding="0.5rem" alignX="center">
           <Box marginTop="135px">{children}</Box>
         </Box>
       </Container>
