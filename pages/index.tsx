@@ -8,7 +8,7 @@ export default function Home() {
       <Box maxWidth="700px">
         <Card marginBottom="200px" >
           <Card.Header>
-            <Card.Title>¿Quién soy?</Card.Title>
+            <Card.Title>¿Quién soy? 🤷</Card.Title>
           </Card.Header>
           <Card.Content>
             <p>

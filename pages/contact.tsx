@@ -15,6 +15,7 @@ import { useState } from "react";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
+  const [sended, setSend] = useState(false);
   const toast = useToasts();
   const { handleSubmit, register, errors, reset } = useForm();
   const onSubmit = (values) => {
@@ -28,22 +29,29 @@ const Contact = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setTimeout(() => {
-          setLoading(false);
-          toast.success({
-            title: "Tu mensaje fue enviado!",
-            message: "Responderé a tu mensaje lo antes posible.",
-          });
-          reset();
-        }, 1500);
-        console.log(data);
+        setLoading(false);
+        if(data.error) {
+          toast.danger({
+            title: "El envio falló",
+            message: "Puedes intentarlo más tarde, o contactarme a daniballesteros@protonmail.com"
+          })
+        } else {
+          setTimeout(() => {
+            setSend(true);
+            toast.success({
+              title: "Tu mensaje fue enviado!",
+              message: "Responderé a tu mensaje lo antes posible.",
+            });
+            reset();
+          }, 1500);
+        }
       });
   };
   return (
     <Layout>
       <Card>
         <Card.Header>
-          <Card.Title>Contacta conmigo</Card.Title>
+          <Card.Title>Contacta conmigo {sended ? '📫' : '📪'}</Card.Title>
         </Card.Header>
         <Card.Content>
           <form onSubmit={handleSubmit(onSubmit)}>

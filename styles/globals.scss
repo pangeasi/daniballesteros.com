@@ -31,10 +31,9 @@ a:hover {
   color: #20767c;
 }
 
+pre,
 code {
-  background: #dfdddd;
-  padding: 10px;
-  border-radius: 5px;
-  font-family: mono;
-  font-size: .8em;
+  font-family: monospace;
+  background-color: #f5f2f0;
+  padding: 2px 4px;
 }

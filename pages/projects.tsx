@@ -62,7 +62,7 @@ const About = () => {
   return (
     <Layout>
       <Heading use="h2" marginBottom="3rem">
-        Proyectos realizados
+        Proyectos realizados 👨‍💻
       </Heading>
       {projects.map((project) => (
         <a href={project.url} key={project.title} target="blank">

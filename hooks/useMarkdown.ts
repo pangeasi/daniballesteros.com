@@ -1,38 +1,15 @@
 import { useEffect, useState } from "react"
+import { getMarkdown } from "../helpers/utils";
+import { MarkdownDetails } from "../types/markdown.type";
 
-const parseValue = (key, value) => {
-    value = value.trim()
-    switch (key) {
-        case 'published':
-            return value === 'true';
-        case 'date':
-            return new Date(value)
-        default:
-            return value;
-    }
-} 
-
-const frontmatter = (data) => {
-    let details = {}
-    const d = data.match(/---\n(.|\n)+---/)[0]
-    let fm = d.replace(/---/g, '')
-    fm.split('\n').slice(1,6).forEach(l => {
-        let key = l.split(':')[0]
-        let value = l.split(':')[1]
-        details[key] = parseValue(key, value);
-    })
-    return {content: data.replace(d, ''), frontmatter: details}
-}
-
-export const useMarkdown = () => {
-    const [markdown, setMarkdown] = useState<{content: string, frontmatter: any}>()
-    
+export const useMarkdown = (slug) => {
+    const [markdown, setMarkdown] = useState<{content: string, details: MarkdownDetails}>()
     useEffect(() => {
         let isCancelled = false;
-        fetch('/blog/como-implemetar-un-blog-con-markdown-y-nextjs.md')
+        slug && fetch(`/blog/${slug}.md`)
         .then(res => res.text())
-        .then(data => !isCancelled && setMarkdown(frontmatter(data)))
+        .then(data => !isCancelled && setMarkdown(getMarkdown(data)))
         return () => isCancelled = true;
-    }, [])
+    }, [slug])
     return markdown;
 }
