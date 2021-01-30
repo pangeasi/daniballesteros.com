@@ -52,6 +52,13 @@ const projects = [
     cover: "badenbaden.png",
     url: "https://badenbadencorner.com/",
   },
+  {
+    title: "Covid-vacuna.app",
+    description:
+      "Mi contribución a la aplicación desarrollada por Miguel Ángel Durán que trata de visibilizar los datos recopilados de los avances en la situación de vacunación es España. Desarrollada en Next.js",
+    cover: "covidvacuna.png",
+    url: "https://covid-vacuna.app/",
+  }
 ];
 
 const About = () => {

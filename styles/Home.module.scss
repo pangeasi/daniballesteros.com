@@ -21,7 +21,24 @@
   z-index: 999;
 }
 
-
 .header-anchor {
   color: white;
+}
+
+.social {
+  a {
+    padding: 10px;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  a:nth-child(1) {
+    color: rgb(88, 146, 12);
+  }
+  a:nth-child(2) {
+    color:rgb(55, 121, 151)
+  }
+  a:nth-child(3) {
+    color:rgb(40, 172, 139)
+  }
 }
