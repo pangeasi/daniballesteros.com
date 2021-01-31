@@ -5,11 +5,12 @@ import Link from "next/link";
 import { Heading } from "bumbag";
 import { useState } from "react";
 
+// TODO: make a script to generate this (with github actions)
 const lastArticles = [
   {
     slug: "como-implemetar-un-blog-con-markdown-y-nextjs",
     title: "¿Cómo implentar un blog con markdown y Next.js?",
-    published: false,
+    published: true,
   },
 ];
 

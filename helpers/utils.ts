@@ -18,8 +18,9 @@ export const getMarkdown = (data) => {
     let details: MarkdownDetails = {};
     let content: string;
 
-    const detailsFounded = data.match(/---\n(.|\n)+---/)[0]
-    let detailsToMap = detailsFounded.replace(/---/g, '')
+    const detailsFounded = data.match(/---([^---]+)---/)[0]
+    console.log(detailsFounded)
+    let detailsToMap = detailsFounded.replace('---', '').replace('---', '')
     detailsToMap.split('\n').slice(1,6).forEach(l => {
         let key = l.split(':')[0]
         let value = l.split(':')[1]
