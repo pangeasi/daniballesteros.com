@@ -4,6 +4,7 @@ import { Layout } from "../../components/layout/Layout";
 import { useMarkdown } from "../../hooks/useMarkdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { useRouter } from "next/router";
+import styles from "../../styles/Article.module.scss";
 
 const Article = () => {
   const { slug } = useRouter().query;
@@ -17,7 +18,7 @@ const Article = () => {
   return (
     <Layout>
       {markdown?.details.published && (
-        <Box maxWidth="700px">
+        <Box maxWidth="700px" className={styles.article}>
           <h1>{markdown.details.title}</h1>
           <time>
             {Intl.DateTimeFormat("es", {

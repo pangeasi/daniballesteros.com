@@ -168,7 +168,6 @@ const Blog = () => {
   const [areArticles, setArticles] = useState(() =>
     lastArticles.some((article) => article.published)
   );
-  console.log(areArticles);
   return (
     <Layout>
       <Box maxWidth="700px">

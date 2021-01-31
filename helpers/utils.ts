@@ -27,7 +27,6 @@ export const getMarkdown = (data) => {
         let value = l.split(':')[1]
         details[key] = parseValue(key, value);
     })
-    console.log(details)
     content = data.replace(detailsFounded, '')
     
     return {content, details}
