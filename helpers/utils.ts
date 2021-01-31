@@ -1,6 +1,6 @@
 import { MarkdownDetails } from "../types/markdown.type";
 
-const parseValue = (key, value) => {
+const parseValue = (key: string, value: string) => {
     value = value.trim()
     switch (key) {
         case 'published':
@@ -19,13 +19,15 @@ export const getMarkdown = (data) => {
     let content: string;
 
     const detailsFounded = data.match(/---([^---]+)---/)[0]
-    console.log(detailsFounded)
-    let detailsToMap = detailsFounded.replace('---', '').replace('---', '')
-    detailsToMap.split('\n').slice(1,6).forEach(l => {
+    detailsFounded
+    .split('\n')
+    .slice(1, -1)
+    .forEach(l => {
         let key = l.split(':')[0]
         let value = l.split(':')[1]
         details[key] = parseValue(key, value);
     })
+    console.log(details)
     content = data.replace(detailsFounded, '')
     
     return {content, details}

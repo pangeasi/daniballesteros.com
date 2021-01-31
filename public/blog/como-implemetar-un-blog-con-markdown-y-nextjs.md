@@ -52,14 +52,17 @@ La información debe ir rodeada de tres guiones medios al principio y al final, 
 
 ```tsx
 const Article = () => {
-  const { slug } = useRouter().query;
+  const { slug } = useRouter().query; // conseguimos el slug del parametro que nos llega por query
   const markdown = useMarkdown(slug);
 
+  // Esta es la parte de react-syntax-highlighter
   const renderers = {
     code: ({ language, value }) => {
       return <SyntaxHighlighter language={language} children={value} />;
     },
   };
+
+  // Renderizamos el contenido de la página de un artículo
   return (
     <Layout>
       {markdown?.details.published && (
@@ -112,7 +115,8 @@ export const useMarkdown = (slug) => {
 `/helpers/utlis.ts`
 
 ```ts
-const parseValue = (key, value) => {
+// parseValue() nos devuelve el valor transformado correctamente
+const parseValue = (key: string, value: string) => {
   value = value.trim();
   switch (key) {
     case "published":
@@ -130,18 +134,17 @@ export const getMarkdown = (data) => {
   let details: MarkdownDetails = {};
   let content: string;
 
-  const detailsFounded = data.match(/---([^---]+)---/)[0];
-  console.log(detailsFounded);
-  let detailsToMap = detailsFounded.replace("---", "").replace("---", "");
-  detailsToMap
-    .split("\n")
-    .slice(1, 6)
+  const detailsFounded = data.match(/---([^---]+)---/)[0]; // Encontramos la información del artículo con esta regex
+
+  detailsFounded
+    .split("\n") // por cada salto de linea creamos un array
+    .slice(1, -1) // nos quedamos con los elementos del array correctos, eliminamos los guiones medios que estan en la primera y última posición
     .forEach((l) => {
       let key = l.split(":")[0];
       let value = l.split(":")[1];
-      details[key] = parseValue(key, value);
+      details[key] = parseValue(key, value); // recorremos cada clave/valor y se lo asignamos al objeto definido
     });
-  content = data.replace(detailsFounded, "");
+  content = data.replace(detailsFounded, ""); // Eliminamos la información de la data (información y contenido) y nos quedamos solo con el contenido
 
   return { content, details };
 };
