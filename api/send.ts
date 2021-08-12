@@ -34,7 +34,7 @@ export default (request: NowRequest, response: NowResponse) => {
         });
         response.status(200).send({ error: false });
       } catch (error) {
-        console.log("ERROR", error);
+        console.log("ERROR", error, process.env.USER);
         response.status(500).send({ error: true });
       }
     })();
