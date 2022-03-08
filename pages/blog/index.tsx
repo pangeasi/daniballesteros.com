@@ -1,8 +1,6 @@
-import { Box } from "bumbag";
-import ReactMarkdown from "react-markdown";
+import { Box, Heading } from "@chakra-ui/react";
 import { Layout } from "../../components/layout/Layout";
 import Link from "next/link";
-import { Heading } from "bumbag";
 import { useState } from "react";
 
 // TODO: make a script to generate this (with github actions)
@@ -21,7 +19,7 @@ const Blog = () => {
   return (
     <Layout>
       <Box maxWidth="700px">
-        <Heading use="h2" marginBottom="3rem">
+        <Heading as="h2" marginBottom="3rem">
           Últimos artículos 📚
         </Heading>
         {!areArticles ? (

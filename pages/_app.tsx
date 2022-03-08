@@ -1,30 +1,17 @@
-import "../styles/globals.scss";
-import { Provider as BumbagProvider, ThemeConfig, ToastManager } from "bumbag";
-import { faLaptopCode } from "@fortawesome/free-solid-svg-icons";
-
-const theme: ThemeConfig = {
-  Heading: {
-    defaultProps: {
-      fontFamily: "Montserrat-SemiBold",
-    },
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import "../styles/global.css";
+const theme = extendTheme({
+  fonts: {
+    body: "Montserrat",
+    heading: "Montserrat",
   },
-  Icon: {
-    iconSets: [
-      {
-        icons: [faLaptopCode],
-        prefix: "solid-",
-        type: "font-awesome",
-      },
-    ],
-  },
-};
+});
 
 const MyApp = ({ Component, pageProps }) => {
   return (
-    <BumbagProvider theme={theme} isSSR>
-        <Component {...pageProps} />
-        <ToastManager />
-    </BumbagProvider>
+    <ChakraProvider theme={theme}>
+      <Component {...pageProps} />
+    </ChakraProvider>
   );
 };
 

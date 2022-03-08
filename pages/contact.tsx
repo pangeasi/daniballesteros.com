@@ -1,23 +1,35 @@
 import { Layout } from "../components/layout/Layout";
 import {
-  Card,
-  FieldStack,
   Input,
   Textarea,
   Button,
   Box,
   Spinner,
   Flex,
-  useToasts,
-} from "bumbag";
+  useToast,
+  Heading,
+  VStack,
+  FormControl,
+  FormErrorMessage,
+  HStack,
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [sended, setSend] = useState(false);
-  const toast = useToasts();
-  const { handleSubmit, register, errors, reset } = useForm();
+  const toast = useToast();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<{
+    name: string;
+    email: string;
+    message: string;
+  }>();
   const onSubmit = (values) => {
     setLoading(true);
     fetch("/api/send", {
@@ -30,17 +42,20 @@ const Contact = () => {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
-        if(data.error) {
-          toast.danger({
+        if (data.error) {
+          toast({
             title: "El envio falló",
-            message: "Puedes intentarlo más tarde, o contactarme a daniballesteros@protonmail.com"
-          })
+            description:
+              "Puedes intentarlo más tarde, o contactarme a daniballesteros@protonmail.com",
+            status: "error",
+          });
         } else {
           setTimeout(() => {
             setSend(true);
-            toast.success({
+            toast({
               title: "Tu mensaje fue enviado!",
-              message: "Responderé a tu mensaje lo antes posible.",
+              description: "Responderé a tu mensaje lo antes posible.",
+              status: "success",
             });
             reset();
           }, 1500);
@@ -49,59 +64,60 @@ const Contact = () => {
   };
   return (
     <Layout>
-      <Card>
-        <Card.Header>
-          <Card.Title>Contacta conmigo {sended ? '📫' : '📪'}</Card.Title>
-        </Card.Header>
-        <Card.Content>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <FieldStack orientation="horizontal">
-              <Box>
-                <Input
-                  type="text"
-                  placeholder="Nombre"
-                  name="name"
-                  ref={register({ required: "Pon tu nombre" })}
-                />
-                {errors.name && errors.name.message}
-              </Box>
-              <Box>
-                <Input
-                  type="mail"
-                  placeholder="Correo"
-                  name="email"
-                  ref={register({
-                    required: "El correo es requerido",
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Correo invalido",
-                    },
-                  })}
-                />
+      <Box shadow="md" rounded="lg" p={8}>
+        <Heading as="h2" mb={4}>
+          Contacta conmigo {sended ? "📫" : "📪"}
+        </Heading>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <VStack>
+            <FormControl isInvalid={!!errors.name}>
+              <Input
+                type="text"
+                placeholder="Nombre"
+                {...register("name", { required: "Pon tu nombre" })}
+              />
+              <FormErrorMessage></FormErrorMessage>
+              {errors.name && errors.name.message}
+            </FormControl>
+            <FormControl isInvalid={!!errors.email}>
+              <Input
+                type="email"
+                placeholder="Correo"
+                {...register("email", {
+                  required: "El correo es requerido",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Correo invalido",
+                  },
+                })}
+              />
+              <FormErrorMessage>
                 {errors.email && errors.email.message}
-              </Box>
-            </FieldStack>
-            <FieldStack marginTop="0.8rem">
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={!!errors.message}>
               <Textarea
                 placeholder="Escribeme..."
                 name="message"
-                ref={register({ required: "Introduce tu mensaje" })}
+                {...register("message", { required: "Introduce tu mensaje" })}
               />
-              {errors.message && errors.message.message}
-            </FieldStack>
-            <Flex gap="2rem">
-              <Button type="submit" marginTop="0.8rem" disabled={loading}>
-                Enviar
-              </Button>
-              {loading && (
-                <Box alignY="center">
-                  <Spinner />
-                </Box>
-              )}
-            </Flex>
-          </form>
-        </Card.Content>
-      </Card>
+              <FormErrorMessage>
+                {errors.message && errors.message.message}
+              </FormErrorMessage>
+            </FormControl>
+          </VStack>
+          <HStack align="center" mt={4} spacing={10}>
+            <Button type="submit" disabled={loading}>
+              Enviar
+            </Button>
+            {loading && (
+              <Box>
+                <Spinner />
+              </Box>
+            )}
+          </HStack>
+        </form>
+      </Box>
     </Layout>
   );
 };

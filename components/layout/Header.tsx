@@ -1,10 +1,15 @@
-import { Box, Flex, Navigation, List } from "bumbag";
+import {
+  Box,
+  Flex,
+  HStack,
+  Spacer,
+  Link,
+  IconButton,
+  useColorMode,
+} from "@chakra-ui/react";
 import { Logo } from "../svgs/Logo";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useIsHeader } from "../../hooks/useIsHeader";
-import { useWindowScroll } from "react-use";
-import styles from '../../styles/Home.module.scss'
+import NextLink from "next/link";
+import { RiMoonClearFill, RiSunFill } from "react-icons/ri";
 
 const menus = [
   {
@@ -21,40 +26,24 @@ const menus = [
   },
 ];
 export const Header = () => {
-  const isHeader = useIsHeader();
-  const { y } = useWindowScroll();
-  const isSmallHeader = y > 50;
+  const { colorMode } = useColorMode();
   return (
-    <Flex
-      className={isSmallHeader ? styles.smallHeader : styles.header}
-      justifyContent="space-between"
-    >
+    <Flex m={5}>
       <Box>
-        <Link href="/">
+        <NextLink href="/">
           <a>
-            <Logo
-              size={isSmallHeader ? 40 : 100}
-              color={isHeader && !isSmallHeader ? "#0b373a" : "#0b373a"}
-            />
+            <Logo size={50} color={colorMode === "dark" ? "#fff" : "#0b373a"} />
           </a>
-        </Link>
+        </NextLink>
       </Box>
-      <Navigation alignY="center">
-        <List orientation="horizontal" paddingRight="2rem">
-          {menus.map((menu) => (
-            <List.Item key={menu.title}>
-              <Link href={menu.link}>
-                <a
-                  {...(isHeader &&
-                    !isSmallHeader && { className: "header-anchor" })}
-                >
-                  {menu.title}
-                </a>
-              </Link>
-            </List.Item>
-          ))}
-        </List>
-      </Navigation>
+      <Spacer />
+      <HStack spacing={6} mr={6}>
+        {menus.map((menu) => (
+          <NextLink key={menu.title} href={menu.link} passHref>
+            <Link fontWeight="bold">{menu.title}</Link>
+          </NextLink>
+        ))}
+      </HStack>
     </Flex>
   );
 };

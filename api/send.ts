@@ -1,4 +1,4 @@
-import { NowRequest, NowResponse } from "@vercel/node";
+import { VercelRequest, VercelResponse } from "@vercel/node";
 import nodemailer from "nodemailer";
 import Joi from "joi";
 
@@ -7,7 +7,7 @@ const schema = Joi.object().keys({
   email: Joi.string().email().required(),
   message: Joi.string().required(),
 });
-export default (request: NowRequest, response: NowResponse) => {
+export default (request: VercelRequest, response: VercelResponse) => {
   const result = schema.validate(request.body);
   if (result.error) {
     response.status(402).send({ error: true, message: result.error.message });
