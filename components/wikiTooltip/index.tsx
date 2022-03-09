@@ -17,7 +17,12 @@ export const WikiTooltip = ({ children }: { children: string }) => {
   const [preview, previewSet] = useState<any>("");
   useEffect(() => {
     fetch(
-      `https://es.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrsearch=${children}&gsrlimit=2&prop=pageimages|extracts|info&inprop=url&pilimit=max&exintro&explaintext&exsentences=4&exlimit=max`
+      `/api/wiki?url=https://es.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrsearch=${children}&gsrlimit=2&prop=pageimages|extracts|info&inprop=url&pilimit=max&exintro&explaintext&exsentences=4&exlimit=max`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     )
       .then((res) => res.json())
       .then((data) => {
