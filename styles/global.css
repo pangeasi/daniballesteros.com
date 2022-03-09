@@ -13,7 +13,7 @@
   src: url(/fonts/Montserrat-Bold.ttf);
 }
 
-pre,
+/* pre,
 code {
   max-width: 95vw !important;
   font-family: monospace !important;
@@ -26,7 +26,7 @@ code {
 code > span {
   background: transparent !important;
   font-family: monospace !important;
-}
+} */
 
 p > img {
   margin-block: 20px;

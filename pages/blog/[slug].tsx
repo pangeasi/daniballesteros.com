@@ -1,4 +1,4 @@
-import { As, Box, Heading, Link, Text } from "@chakra-ui/react";
+import { As, Box, Code, Heading, Link, Text } from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
 import { Layout } from "../../components/layout/Layout";
 import { useMarkdown } from "../../hooks/useMarkdown";
@@ -10,38 +10,6 @@ const Article = () => {
   const { slug } = useRouter().query;
   const markdown = useMarkdown(slug);
 
-  const renderers = {
-    code: ({ language, value }) => {
-      return <SyntaxHighlighter language={language} children={value} />;
-    },
-    paragraph: ({ children }) => {
-      return <Text marginY={5}>{children}</Text>;
-    },
-    link: ({ children }) => {
-      return (
-        <Link
-          isExternal
-          display="inline-flex"
-          alignItems="center"
-          color="blue.600"
-          gap={1}
-        >
-          {children} <RiExternalLinkFill />
-        </Link>
-      );
-    },
-    heading: ({ children, level }) => {
-      return (
-        <Heading
-          as={("h" + level) as As<any>}
-          marginY={7}
-          fontSize={34 - level * 3}
-        >
-          {children}
-        </Heading>
-      );
-    },
-  };
   return (
     <Layout>
       {markdown?.details.published && (
@@ -57,7 +25,83 @@ const Article = () => {
               }).format(markdown.details.date)}
             </time>
           </Box>
-          <ReactMarkdown renderers={renderers}>
+          <ReactMarkdown
+            components={{
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || "");
+                return !inline && match ? (
+                  <SyntaxHighlighter
+                    children={String(children).replace(/\n$/, "")}
+                    language={match[1]}
+                    PreTag="div"
+                    {...props}
+                  />
+                ) : (
+                  <Code padding={1} className={className} {...props}>
+                    {children}
+                  </Code>
+                );
+              },
+              link({ children }) {
+                return (
+                  <Link
+                    isExternal
+                    display="inline-flex"
+                    alignItems="center"
+                    color="blue.600"
+                    gap={1}
+                  >
+                    {children} <RiExternalLinkFill />
+                  </Link>
+                );
+              },
+              p({ children }) {
+                return <Text marginY={5}>{children}</Text>;
+              },
+              h1({ children }) {
+                return (
+                  <Heading as="h1" marginY={7} fontSize={36}>
+                    {children}
+                  </Heading>
+                );
+              },
+              h2({ children }) {
+                return (
+                  <Heading as="h2" marginY={7} fontSize={30}>
+                    {children}
+                  </Heading>
+                );
+              },
+              h3({ children }) {
+                return (
+                  <Heading as="h3" marginY={7} fontSize={24}>
+                    {children}
+                  </Heading>
+                );
+              },
+              h4({ children }) {
+                return (
+                  <Heading as="h4" marginY={7} fontSize={20}>
+                    {children}
+                  </Heading>
+                );
+              },
+              h5({ children }) {
+                return (
+                  <Heading as="h5" marginY={7} fontSize={18}>
+                    {children}
+                  </Heading>
+                );
+              },
+              h6({ children }) {
+                return (
+                  <Heading as="h6" marginY={7} fontSize={14}>
+                    {children}
+                  </Heading>
+                );
+              },
+            }}
+          >
             {markdown?.content}
           </ReactMarkdown>
         </Box>
