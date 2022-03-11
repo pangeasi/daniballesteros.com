@@ -1,4 +1,5 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import "../styles/global.css";
 const theme = extendTheme({
   fonts: {
@@ -8,10 +9,13 @@ const theme = extendTheme({
 });
 
 const MyApp = ({ Component, pageProps }) => {
+  const client = new QueryClient();
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <QueryClientProvider client={client}>
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </QueryClientProvider>
   );
 };
 
