@@ -18,10 +18,10 @@ const Blog = () => {
   );
   return (
     <Layout>
+      <Heading as="h2" fontSize={{ base: 22 }} marginBottom="3rem">
+        Últimos artículos 📚
+      </Heading>
       <Box maxWidth="700px">
-        <Heading as="h2" marginBottom="3rem">
-          Últimos artículos 📚
-        </Heading>
         {!areArticles ? (
           <p>No hay artículos todavía</p>
         ) : (
