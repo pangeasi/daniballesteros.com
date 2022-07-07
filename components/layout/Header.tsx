@@ -4,12 +4,13 @@ import {
   HStack,
   Spacer,
   Link,
-  IconButton,
   useColorMode,
 } from "@chakra-ui/react";
 import { Logo } from "../svgs/Logo";
 import NextLink from "next/link";
-import { RiMoonClearFill, RiSunFill } from "react-icons/ri";
+import dynamic from "next/dynamic";
+import { useIsScrolledHeader } from "../../hooks/useIsScrolledHeader";
+import { motion } from "framer-motion";
 
 const menus = [
   {
@@ -25,14 +26,48 @@ const menus = [
     link: "/projects",
   },
 ];
-export const Header = () => {
+const Header = () => {
   const { colorMode } = useColorMode();
+  const isScrolling = useIsScrolledHeader();
+
+  const MotionLogo = motion(Logo);
+  const MotionFlex = motion(Flex);
+  const variantsLogo = {
+    normal: {
+      scale: 1,
+      rotate: ["0deg", "30deg", "-30deg", "0deg"],
+      transition: { duration: 0.5, ease: "easeInOut" },
+    },
+    small: { scale: 0.5, translateY: -12 },
+  };
+  const variantsHeader = {
+    normal: {
+      height: "auto",
+    },
+    small: {
+      height: "40px",
+    },
+  };
+
   return (
-    <Flex m={5}>
-      <Box>
+    <MotionFlex
+      position="fixed"
+      animate={isScrolling ? "small" : "normal"}
+      variants={variantsHeader}
+      top={0}
+      w="full"
+      bg={colorMode === "dark" ? "blackAlpha.800" : "whiteAlpha.800"}
+    >
+      <Box p={2}>
         <NextLink href="/">
           <a>
-            <Logo size={50} color={colorMode === "dark" ? "#fff" : "#0b373a"} />
+            <MotionLogo
+              animate={isScrolling ? "small" : "normal"}
+              variants={variantsLogo}
+              whileTap={{ scale: 0.9 }}
+              size={50}
+              color={colorMode === "dark" ? "#fff" : "#0b373a"}
+            />
           </a>
         </NextLink>
       </Box>
@@ -44,6 +79,8 @@ export const Header = () => {
           </NextLink>
         ))}
       </HStack>
-    </Flex>
+    </MotionFlex>
   );
 };
+
+export default dynamic(() => Promise.resolve(Header), { ssr: false });

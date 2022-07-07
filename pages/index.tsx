@@ -7,23 +7,19 @@ const MotionBox = motion<Omit<BoxProps, "transition">>(Box);
 export default function Home() {
   return (
     <Layout>
-      <Box maxW={700} shadow="md" rounded="lg" p={{ base: 3, md: 8 }}>
+      <Box mt={{ base: 10, sm: 200 }} maxW={1000} p={{ base: 3, md: 8 }}>
         <Box>
-          <Box mt={5}>
+          <Box>
             <VStack align="start">
               <HStack>
-                <Text fontSize={50}>Hola, soy Dani</Text>
-                <MotionBox
-                  as="span"
-                  fontSize={40}
-                  animate={{ rotate: [0, 90, 10, 90, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                >
-                  👋
-                </MotionBox>
+                <Text fontWeight="bold" fontSize={{ base: 40 }}>
+                  Hola, soy Dani
+                </Text>
               </HStack>
 
-              <Text fontSize={50}>Web developer</Text>
+              <Text fontSize={{ base: 20 }}>
+                Desarrollador front-end, especializado en react
+              </Text>
             </VStack>
             <HStack spacing={6} mt={10} justify="end">
               <Link href="https://github.com/pangeasi" color="purple.400">

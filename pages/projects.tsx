@@ -60,10 +60,10 @@ const projects = [
 const Projects = () => {
   return (
     <Layout>
-      <Heading as="h2" mb="3rem">
+      <Heading as="h2" fontSize={{ base: 22 }} mb="3rem">
         Proyectos realizados 👨‍💻
       </Heading>
-      <VStack spacing={10}>
+      <VStack spacing={10} mb={20}>
         {projects.map((project) => (
           <a href={project.url} key={project.title} target="blank">
             <Stack
@@ -72,14 +72,16 @@ const Projects = () => {
               rounded="lg"
             >
               <Image
-                roundedStart={{ base: "none", md: "lg" }}
-                roundedTop={{ base: "lg", md: "none" }}
+                roundedTop="lg"
+                roundedLeft="lg"
+                roundedBottomStart={{ base: "none", md: "lg" }}
+                roundedTopRight={{ base: "lg", md: "none" }}
                 width={{ base: "100%", md: 300 }}
                 minH={180}
                 objectFit="cover"
                 src={`images/projects/${project.cover}`}
               />
-              <Box padding="0.5rem">
+              <Box padding="0.8rem" pb={6}>
                 <Heading as="h3">{project.title}</Heading>
                 {project.description}
               </Box>

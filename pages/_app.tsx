@@ -1,4 +1,5 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "react-query";
 import "../styles/global.css";
 const theme = extendTheme({
@@ -13,7 +14,9 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <QueryClientProvider client={client}>
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        <AnimatePresence>
+          <Component {...pageProps} />
+        </AnimatePresence>
       </ChakraProvider>
     </QueryClientProvider>
   );

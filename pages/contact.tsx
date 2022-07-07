@@ -65,7 +65,7 @@ const Contact = () => {
   return (
     <Layout>
       <Box shadow="md" rounded="lg" p={8}>
-        <Heading as="h2" mb={4}>
+        <Heading as="h2" fontSize={{ base: 22 }} mb={4}>
           Contacta conmigo {sended ? "📫" : "📪"}
         </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
