@@ -1,85 +1,54 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Spacer,
-  Link,
-  useColorMode,
-} from "@chakra-ui/react";
 import { Logo } from "../svgs/Logo";
-import NextLink from "next/link";
+import { motion, useAnimation } from "framer-motion";
+import { LinkNav } from "../LinkNav";
 import dynamic from "next/dynamic";
-import { useIsScrolledHeader } from "../../hooks/useIsScrolledHeader";
-import { motion } from "framer-motion";
+import { TechMachine } from "../techs/Core";
 
 const menus = [
   {
-    title: "Blog",
-    link: "/blog",
-  },
-  {
     title: "Contacto",
-    link: "/contact",
+    link: "#contact",
   },
   {
     title: "Proyectos",
-    link: "/projects",
+    link: "#projects",
   },
 ];
 const Header = () => {
-  const { colorMode } = useColorMode();
-  const isScrolling = useIsScrolledHeader();
-
-  const MotionLogo = motion(Logo);
-  const MotionFlex = motion(Flex);
-  const variantsLogo = {
-    normal: {
-      scale: 1,
-      rotate: ["0deg", "30deg", "-30deg", "0deg"],
-      transition: { duration: 0.5, ease: "easeInOut" },
-    },
-    small: { scale: 0.5, translateY: -12 },
-  };
-  const variantsHeader = {
-    normal: {
-      height: "auto",
-    },
-    small: {
-      height: "40px",
-    },
-  };
-
   return (
-    <MotionFlex
-      position="fixed"
-      animate={isScrolling ? "small" : "normal"}
-      variants={variantsHeader}
-      top={0}
-      w="full"
-      bg={colorMode === "dark" ? "blackAlpha.800" : "whiteAlpha.800"}
+    <header
+      id="header"
+      className="flex flex-col bg-gradient-to-r from-cyan-400 to-blue-700"
     >
-      <Box p={2}>
-        <NextLink href="/">
-          <a>
-            <MotionLogo
-              animate={isScrolling ? "small" : "normal"}
-              variants={variantsLogo}
-              whileTap={{ scale: 0.9 }}
-              size={50}
-              color={colorMode === "dark" ? "#fff" : "#0b373a"}
-            />
+      <div className="w-full">
+        <TechMachine />
+      </div>
+      <div className="flex self-center">
+        <div className="w-24 sm:w-36 mt-8 animate-bounce-in-top">
+          <a href="/">
+            <Logo color="#fff" />
           </a>
-        </NextLink>
-      </Box>
-      <Spacer />
-      <HStack spacing={6} mr={6}>
-        {menus.map((menu) => (
-          <NextLink key={menu.title} href={menu.link} passHref>
-            <Link fontWeight="bold">{menu.title}</Link>
-          </NextLink>
+        </div>
+      </div>
+      <div className="flex max-w-md self-center gap-4 mt-4 text-xl text-white">
+        {menus.map(({ link, title }) => (
+          <LinkNav key={link} href={link}>
+            {title}
+          </LinkNav>
         ))}
-      </HStack>
-    </MotionFlex>
+      </div>
+      <div className="z-10">
+        <svg viewBox="0 0 900 50">
+          <path
+            fill="white"
+            d="M0 14L37.5 16.3C75 18.7 150 23.3 225 28.7C300 34 375 40 450 36C525 32 600 18 675 13.5C750 9 825 14 862.5 16.5L900 19L900 0L862.5 0C825 0 750 0 675 0C600 0 525 0 450 0C375 0 300 0 225 0C150 0 75 0 37.5 0L0 0Z"
+            style={{
+              transform: "matrix(-1, 0, 0, -1, 900.000, 50.000)",
+            }}
+          ></path>
+        </svg>
+      </div>
+    </header>
   );
 };
 
