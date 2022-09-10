@@ -13,15 +13,19 @@ const menus = [
     title: "Proyectos",
     link: "#projects",
   },
+  {
+    title: "Habilidades",
+    link: "#skills",
+  },
 ];
 const Header = () => {
   return (
     <header
       id="header"
-      className="flex flex-col bg-gradient-to-r from-cyan-400 to-blue-700"
+      className="w-full flex flex-col bg-gradient-to-r from-cyan-400 to-blue-700"
     >
-      <div className="w-full">
-        <TechMachine />
+      <div className="w-full h-[190px] md:h-[260px] absolute overflow-hidden">
+        <TechMachine amount={20} />
       </div>
       <div className="flex self-center">
         <div className="w-24 sm:w-36 mt-8 animate-bounce-in-top">
@@ -30,7 +34,7 @@ const Header = () => {
           </a>
         </div>
       </div>
-      <div className="flex max-w-md self-center gap-4 mt-4 text-xl text-white">
+      <div className="flex max-w-md self-center gap-4 mt-2 text-xl text-white">
         {menus.map(({ link, title }) => (
           <LinkNav key={link} href={link}>
             {title}

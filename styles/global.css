@@ -17,6 +17,11 @@
   src: url(/fonts/Montserrat-Bold.ttf);
 }
 
+html,
+body {
+  font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 pre,
 code {
   max-width: 95vw !important;
@@ -30,6 +35,9 @@ p > img {
   max-width: 95vw;
 }
 
+.image-organic {
+  clip-path: url(#blob);
+}
 
 @layer base {
   .text-shadow-link {

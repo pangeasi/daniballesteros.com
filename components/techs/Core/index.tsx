@@ -1,9 +1,13 @@
 import { CoreTechs, getRandomTechie } from "./CoreTechs";
 
-export const TechMachine = () => {
+type TechMachineProps = {
+  amount?: number;
+};
+
+export const TechMachine = ({ amount }: TechMachineProps) => {
   return (
     <>
-      {Array.from(Array(15)).map((_, index) => (
+      {Array.from(Array(amount || 10)).map((_, index) => (
         <CoreTechs key={index} initialTech={getRandomTechie()} />
       ))}
     </>

@@ -13,11 +13,9 @@ const MyApp = ({ Component, pageProps }) => {
   const client = new QueryClient();
   return (
     <QueryClientProvider client={client}>
-      <ChakraProvider theme={theme}>
-        <AnimatePresence>
-          <Component {...pageProps} />
-        </AnimatePresence>
-      </ChakraProvider>
+      <AnimatePresence>
+        <Component {...pageProps} />
+      </AnimatePresence>
     </QueryClientProvider>
   );
 };
