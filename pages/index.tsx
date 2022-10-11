@@ -1,14 +1,43 @@
 import AboutMe from "../components/Home/AboutMe";
+import Contact from "../components/Home/contact";
+import { ContactIcon } from "../components/Icons/contact";
 import { Layout } from "../components/layout/Layout";
+//import Projects from "../components/Home/projects";
+// import { ProjectsIcon } from "../components/Icons/projects";
+// import { SkillsIcon } from "../components/Icons/skills";
 
 export default function Home() {
   return (
     <Layout>
       <AboutMe />
-      <section>
-        <h2 className="text-2xl text-center mt-8">Tecnologías</h2>
-      </section>
+      {/* <section id="projects">
+        <h2 className="text-3xl mt-8">
+          <span>
+            <ProjectsIcon className="text-5xl inline-flex pb-1" />
+          </span>{" "}
+          Proyectos
+        </h2>
+        <Projects />
+      </section> */}
 
+      {/* <section id="skills">
+        <h2 className="text-3xl mt-8">
+          <span>
+            <SkillsIcon className="text-5xl inline-flex pb-1" />
+          </span>{" "}
+          Habilidades
+        </h2>
+      </section> */}
+
+      <section id="contact" className="flex flex-col items-center">
+        <h2 className="text-3xl mt-8">
+          <span>
+            <ContactIcon className="text-5xl inline-flex pb-1" />
+          </span>{" "}
+          Contacto
+        </h2>
+        <Contact />
+      </section>
       {/* <VStack align="start">
         <HStack>
           <Text fontWeight="bold" fontSize={{ base: 40 }}>

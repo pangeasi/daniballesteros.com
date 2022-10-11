@@ -2,13 +2,13 @@ import { useBreakpoint } from "../../hooks/useBreakpoints";
 import { motion, useAnimation } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import photo from "../../public/images/avatar.jpeg";
+import Image from "next/image";
 
 const AboutMe = () => {
   const [collapsed, setCollapsed] = useState(true);
   const control = useAnimation();
-  const bp = useBreakpoint();
-
-  console.log(bp);
+  const { isTouchDevice } = useBreakpoint();
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
@@ -41,24 +41,26 @@ const AboutMe = () => {
         }}
         width={240}
         height={240}
-        src="/images/avatar.jpeg"
+        src="/images/avatar.png"
         alt="Dani Ballesteros"
         className="image-organic"
       />
 
-      <div className="mt-2 text-center text-xl md:mt-8 md:text-start p-4 relative">
-        <p>
-          <strong>Hola,</strong> soy Dani
-        </p>
-        <p className="mb-2">Fullstack Web Developer</p>
+      <div className="mt-2 md:mt-8 md:text-start p-4 relative">
+        <div className="text-center md:text-start">
+          <p className="text-xl">Hola, soy Dani</p>
+          <p className="mb-2 font-bold text-md">Fullstack Web Developer</p>
+        </div>
         <motion.div
           animate={control}
-          className={`${bp?.includes(["xs", "sm"] ? "relative" : "absolute")} ${
-            collapsed && "h-[120px]"
-          } overflow-y-hidden hover:bg-blue-50 cursor-help px-4 -mx-4 overflow-x-clip rounded-lg`}
+          className={`${collapsed && "h-[120px]"} overflow-y-hidden ${
+            !isTouchDevice
+              ? "hover:bg-blue-50 cursor-help"
+              : "active:bg-blue-50"
+          } px-4 -mx-4 overflow-x-clip`}
           onClick={handleCollapse}
         >
-          <div className="flex flex-col gap-2 text-lg mt-2">
+          <div className="flex flex-col gap-5 mt-2">
             {collapsed && (
               <div className="w-[100%] h-14 absolute bottom-0 z-10 bg-gradient-to-b from-transparent to-white" />
             )}
@@ -70,13 +72,9 @@ const AboutMe = () => {
               el diseño UX, como el proceso de QA, testing y despliegue.
             </p>
             <p>
-              En mis inicios en la web, diseñé y saqué a producción portales
-              hechos en Wordpress para clientes, amigos y familiares durante
-              largos años.
-            </p>
-            <p>
               He realizado proyectos para grandes compañias, como Universia
-              Santander, ESIC, Melia, LaLiga y para startups o emprendedores.
+              Santander, ESIC, Melia, LaLiga, también para startups y
+              emprendedores.
             </p>
             <p>
               Si tienes algún proyecto interesante que desarrollar, o

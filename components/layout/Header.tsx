@@ -1,14 +1,10 @@
 import { Logo } from "../svgs/Logo";
-import { motion, useAnimation } from "framer-motion";
-import { LinkNav } from "../LinkNav";
 import dynamic from "next/dynamic";
 import { TechMachine } from "../techs/Core";
+// import { motion, useAnimation } from "framer-motion";
+// import { LinkNav } from "../LinkNav";
 
 const menus = [
-  {
-    title: "Contacto",
-    link: "#contact",
-  },
   {
     title: "Proyectos",
     link: "#projects",
@@ -17,6 +13,10 @@ const menus = [
     title: "Habilidades",
     link: "#skills",
   },
+  {
+    title: "Contacto",
+    link: "#contact",
+  },
 ];
 const Header = () => {
   return (
@@ -24,7 +24,7 @@ const Header = () => {
       id="header"
       className="w-full flex flex-col bg-gradient-to-r from-cyan-400 to-blue-700"
     >
-      <div className="w-full h-[190px] md:h-[260px] absolute overflow-hidden">
+      <div className="w-full h-[300px] absolute overflow-hidden">
         <TechMachine amount={20} />
       </div>
       <div className="flex self-center">
@@ -35,11 +35,11 @@ const Header = () => {
         </div>
       </div>
       <div className="flex max-w-md self-center gap-4 mt-2 text-xl text-white">
-        {menus.map(({ link, title }) => (
+        {/* {menus.map(({ link, title }) => (
           <LinkNav key={link} href={link}>
             {title}
           </LinkNav>
-        ))}
+        ))} */}
       </div>
       <div className="z-10">
         <svg viewBox="0 0 900 50">

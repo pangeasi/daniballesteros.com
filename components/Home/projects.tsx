@@ -1,5 +1,5 @@
-import { Layout } from "../components/layout/Layout";
-import { Box, Heading, Image, Stack, VStack } from "@chakra-ui/react";
+import Image from "next/image";
+import { useBreakpoint } from "../../hooks/useBreakpoints";
 
 const projects = [
   {
@@ -7,7 +7,7 @@ const projects = [
     description: `Aplicacion realizada en React native para iPhone y Android, fue una practica/proyecto que hice junto a mis compañeros para el curso. Se trata de una app para crear tu propia camiseta y compartirla con un grupo de amigos (contactos de tu agenda y que tuvieran la app), tiene dos modos, el de edicion y el de previsualización 3D. Se monto un servidor para poder generar la textura para el modelo 3D realizado con puppeteer y jimp.`,
     cover: "gotoshirt.png",
     width: 400,
-    height: 218,
+    height: 205,
     url: "https://github.com/bulbrange/goToShirt",
   },
   {
@@ -25,7 +25,7 @@ const projects = [
       "Buscador de becas nacionales e internacionales con su potente buscador realizado con el motor de Elastic Search. En el equipo tuve el perfil de backend, implementando las mejoras de los filtros y refinamiento de busqueda, sugerencias y web scraping de otros portales y blogs que publican becas. Realizado sobre una arquitectura de microservicios, desarrollado en NodeJS y mongoDB.",
     cover: "universia.png",
     width: 400,
-    height: 204,
+    height: 205,
     url: "https://becas.universia.net/",
   },
   {
@@ -43,7 +43,7 @@ const projects = [
       "Elena y Sergio me encargador una web estática que les sirviera como escaparate para su marca, tienen un negocio de reparto a domicilio de comida alemana. Desarrollada en Next.js",
     cover: "badenbaden_400x.png",
     width: 400,
-    height: 195,
+    height: 205,
     url: "https://badenbadencorner.com/",
   },
   {
@@ -52,44 +52,33 @@ const projects = [
       "Mi contribución a la aplicación desarrollada por Miguel Ángel Durán que trata de visibilizar los datos recopilados de los avances en la situación de vacunación es España. Desarrollada en Next.js",
     cover: "covidvacuna_400x.png",
     width: 400,
-    height: 192,
+    height: 205,
     url: "https://covid-vacuna.app/",
   },
 ];
 
 const Projects = () => {
+  const { isMobile } = useBreakpoint();
   return (
-    <Layout>
-      <Heading as="h2" fontSize={{ base: 22 }} mb="3rem">
-        Proyectos realizados 👨‍💻
-      </Heading>
-      <VStack spacing={10} mb={20}>
-        {projects.map((project) => (
-          <a href={project.url} key={project.title} target="blank">
-            <Stack
-              direction={{ base: "column", md: "row" }}
-              shadow="md"
-              rounded="lg"
-            >
-              <Image
-                roundedTop="lg"
-                roundedLeft="lg"
-                roundedBottomStart={{ base: "none", md: "lg" }}
-                roundedTopRight={{ base: "lg", md: "none" }}
-                width={{ base: "100%", md: 300 }}
-                minH={180}
-                objectFit="cover"
-                src={`images/projects/${project.cover}`}
-              />
-              <Box padding="0.8rem" pb={6}>
-                <Heading as="h3">{project.title}</Heading>
-                {project.description}
-              </Box>
-            </Stack>
-          </a>
-        ))}
-      </VStack>
-    </Layout>
+    <div className="flex flex-col gap-10">
+      {projects.map((project) => (
+        <div
+          key={project.title}
+          className="grid grid-flow-col gap-8 shadow-md h-[300px] rounded-xl"
+        >
+          <Image
+            width={project.width}
+            height={project.height}
+            objectFit="cover"
+            src={`/images/projects/${project.cover}`}
+          />
+          <div>
+            <h2 className="text-2xl font-bold">{project.title}</h2>
+            <p className="text-gray-500">{project.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 
