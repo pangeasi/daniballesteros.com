@@ -1,9 +1,9 @@
-import { useToast } from "@chakra-ui/react";
 import { Controller, useForm } from "react-hook-form";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Input } from "../Input";
+import { toast } from "react-toastify";
 
 const schema = yup.object({
   name: yup.string().required("El nombre es requerido"),
@@ -15,7 +15,6 @@ type FormValues = yup.InferType<typeof schema>;
 const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [sended, setSend] = useState(false);
-  const toast = useToast();
   const {
     handleSubmit,
     reset,
@@ -37,20 +36,15 @@ const Contact = () => {
       .then((data) => {
         setLoading(false);
         if (data.error) {
-          toast({
-            title: "El envio falló",
-            description:
-              "Puedes intentarlo más tarde, o contactarme a daniballesteros@protonmail.com",
-            status: "error",
-          });
+          toast.error(
+            "El envio falló. Puedes intentarlo más tarde, o contactarme a daniballesteros@protonmail.com"
+          );
         } else {
           setTimeout(() => {
             setSend(true);
-            toast({
-              title: "Tu mensaje fue enviado!",
-              description: "Responderé a tu mensaje lo antes posible.",
-              status: "success",
-            });
+            toast.success(
+              "Tu mensaje fue enviado! Te responderé lo antes posible"
+            );
             reset();
           }, 1500);
         }
@@ -90,7 +84,9 @@ const Contact = () => {
             render={({ field }) => (
               <>
                 <textarea
-                  className="focus:outline-0 border-2 border-gray-300 p-2 rounded-md"
+                  className={`${
+                    errors.message ? "border-red-600 border-1" : ""
+                  } focus:outline-1 focus:outline-blue-600 border-2 border-gray-300 p-2 rounded-md`}
                   placeholder="Escribeme"
                   {...field}
                 ></textarea>
@@ -109,6 +105,14 @@ const Contact = () => {
               disabled={loading}
             >
               Enviar
+              {loading && (
+                <div
+                  className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full ml-2"
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              )}
             </button>
           </div>
         </div>

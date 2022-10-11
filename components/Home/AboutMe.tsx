@@ -4,6 +4,9 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import photo from "../../public/images/avatar.jpeg";
 import Image from "next/image";
+import LinkedinIcon from "../svgs/Linkedin";
+import GithubIcon from "../svgs/Github";
+import TwitterIcon from "../svgs/Twitter";
 
 const AboutMe = () => {
   const [collapsed, setCollapsed] = useState(true);
