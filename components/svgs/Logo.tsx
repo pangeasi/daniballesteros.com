@@ -12,8 +12,8 @@ export const Logo = forwardRef(
         id="Capa_1"
         ref={ref}
         fill={color}
-        width={`${size}px`}
-        height={`${size}px`}
+        width={`${size || 100}px`}
+        height={`${size || 100}px`}
         viewBox="-20 -5 220 220"
       >
         <style type="text/css" id="style18">
