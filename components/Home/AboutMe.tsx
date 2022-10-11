@@ -56,7 +56,7 @@ const AboutMe = () => {
         </div>
         <motion.div
           animate={control}
-          className={`${collapsed && "h-[120px]"} overflow-y-hidden ${
+          className={`${collapsed && "h-[95px]"} overflow-y-hidden ${
             !isTouchDevice
               ? "hover:bg-blue-50 cursor-help"
               : "active:bg-blue-50"

@@ -32,7 +32,7 @@ export default function Home() {
         </h2>
       </section> */}
       <section id="rrss">
-        <div className="flex justify-center">
+        <div className="flex justify-center gap-6">
           <a
             href="https://www.linkedin.com/in/dani-ballesteros/"
             target="_blank"

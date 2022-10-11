@@ -10,7 +10,7 @@ export const Layout = ({ children }) => {
       </Head>
       <Header />
       <div className="z-10 bg-white relative">
-        <main className="container mx-auto p-4 max-w-6xl">{children}</main>
+        <main className="container mx-auto p-4 max-w-4xl">{children}</main>
       </div>
     </>
   );
