@@ -69,10 +69,10 @@ const AboutMe = () => {
             )}
             <p>
               Soy desarrollador web con más de 3 años de experiencia,
-              especializado en Javascript/Typescript. Tengo experiencia
-              profesional trabajando tanto en el frontend (React, Next.js), como
-              en el backend (Node, Nest.js, graphQL, PostgreSQL, mongoDB). Desde
-              el diseño UX, como el proceso de QA, testing y despliegue.
+              especializado en Typescript. Tengo experiencia profesional
+              trabajando tanto en el frontend (React, Next.js), como en el
+              backend (Node, Nest.js, graphQL, PostgreSQL, mongoDB). Desde el
+              diseño UX, como el proceso de QA, testing y despliegue.
             </p>
             <p>
               He realizado proyectos para grandes compañias, como Universia
