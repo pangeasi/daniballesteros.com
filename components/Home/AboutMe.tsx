@@ -63,7 +63,7 @@ const AboutMe = () => {
               <div className="w-[100%] h-14 absolute bottom-0 z-10 bg-gradient-to-b from-transparent to-white" />
             )}
             <p>
-              Soy desarrollador web con más de 3 años de experiencia,
+              Soy desarrollador web con más de 5 años de experiencia,
               especializado en Typescript. Tengo experiencia profesional
               trabajando tanto en el frontend (React, Next.js), como en el
               backend (Node, Nest.js, graphQL, PostgreSQL, mongoDB). Desde el
