@@ -22,7 +22,7 @@ const Header = () => {
   return (
     <header
       id="header"
-      className="w-full flex flex-col bg-gradient-to-r from-cyan-400 to-blue-700"
+      className="w-full flex flex-col bg-gradient-to-r from-[#2f3980] to-[#aa2d71]"
     >
       <div className="w-full h-[300px] absolute overflow-hidden">
         <TechMachine amount={20} />
