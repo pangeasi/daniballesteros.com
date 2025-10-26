@@ -39,7 +39,7 @@ const AboutMe = () => {
         }}
         width={240}
         height={240}
-        src="/images/avatar.png"
+        src="/images/avatar.jpeg"
         alt="Dani Ballesteros"
         className="image-organic"
       />
