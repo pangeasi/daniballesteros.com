@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Input } from "../Input";
@@ -15,8 +15,7 @@ type FormValues = yup.InferType<typeof schema>;
 const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [sended, setSend] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const recaptchaWidgetId = useRef<number | null>(null);
+  const [captchaReady, setCaptchaReady] = useState(false);
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
   const {
     handleSubmit,
@@ -35,49 +34,39 @@ const Contact = () => {
       return;
     }
 
-    const loadRecaptcha = () => {
-      if (!window.grecaptcha || recaptchaWidgetId.current !== null) {
+    setCaptchaReady(false);
+
+    const scriptId = "recaptcha-script";
+    const initializeRecaptcha = () => {
+      if (!window.grecaptcha) {
         return;
       }
-      recaptchaWidgetId.current = window.grecaptcha.render(
-        "recaptcha-container",
-        {
-          sitekey: siteKey,
-          callback: (token: string) => {
-            setCaptchaToken(token);
-          },
-          "expired-callback": () => {
-            setCaptchaToken(null);
-          },
-          "error-callback": () => {
-            setCaptchaToken(null);
-          },
-        }
-      );
+      window.grecaptcha.ready(() => {
+        setCaptchaReady(true);
+      });
     };
 
     if (window.grecaptcha) {
-      loadRecaptcha();
-    } else {
-      window.onRecaptchaLoadCallback = loadRecaptcha;
+      initializeRecaptcha();
+      return;
     }
 
-    const scriptId = "recaptcha-script";
     if (!document.getElementById(scriptId)) {
       const script = document.createElement("script");
       script.id = scriptId;
-      script.src =
-        "https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoadCallback&render=explicit";
+      script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
       script.async = true;
       script.defer = true;
+      script.onload = initializeRecaptcha;
       document.body.appendChild(script);
-    } else if (window.grecaptcha) {
-      loadRecaptcha();
+    } else {
+      initializeRecaptcha();
     }
 
     return () => {
-      if (typeof window !== "undefined") {
-        window.onRecaptchaLoadCallback = undefined;
+      const script = document.getElementById(scriptId);
+      if (script) {
+        script.onload = null;
       }
     };
   }, [siteKey]);
@@ -87,18 +76,25 @@ const Contact = () => {
       toast.error("El formulario no está configurado correctamente.");
       return;
     }
-    if (!captchaToken) {
-      toast.error("Por favor confirma que no eres un robot.");
+    if (typeof window === "undefined" || !window.grecaptcha) {
+      toast.error("No se pudo cargar el sistema anti bots. Intenta nuevamente más tarde.");
+      return;
+    }
+
+    if (!captchaReady) {
+      toast.error("El verificador de seguridad aún se está cargando. Intenta de nuevo en unos segundos.");
       return;
     }
     setLoading(true);
     try {
+      const token = await window.grecaptcha.execute(siteKey, { action: "contact" });
+
       const response = await fetch("/api/send", {
         headers: {
           "Content-Type": "application/json",
         },
         method: "POST",
-        body: JSON.stringify({ ...values, token: captchaToken }),
+        body: JSON.stringify({ ...values, token }),
       });
       const data = await response.json();
       if (!response.ok || data.error) {
@@ -120,12 +116,6 @@ const Contact = () => {
       );
     } finally {
       setLoading(false);
-      setCaptchaToken(null);
-      if (typeof window !== "undefined" && window.grecaptcha) {
-        if (recaptchaWidgetId.current !== null) {
-          window.grecaptcha.reset(recaptchaWidgetId.current);
-        }
-      }
     }
   };
   return (
@@ -176,12 +166,32 @@ const Contact = () => {
               </>
             )}
           />
-          <div id="recaptcha-container" className="self-center" />
+          <p className="text-[11px] text-right text-gray-500">
+            Este sitio está protegido por reCAPTCHA y aplican la {" "}
+            <a
+              className="underline"
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Política de Privacidad
+            </a>{" "}
+            y los {" "}
+            <a
+              className="underline"
+              href="https://policies.google.com/terms"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Términos de Servicio
+            </a>{" "}
+            de Google.
+          </p>
           <div className="flex justify-end">
             <button
               type="submit"
               className="bg-gradient-to-t from-blue-600 to-cyan-600 text-white px-2 py-1 rounded-sm transition ease-linear hover:brightness-150"
-              disabled={loading}
+              disabled={loading || !captchaReady}
             >
               Enviar
               {loading && (

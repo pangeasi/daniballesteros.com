@@ -3,6 +3,9 @@ import nodemailer from "nodemailer";
 import Joi from "joi";
 import axios from "axios";
 
+const RECAPTCHA_EXPECTED_ACTION = "contact";
+const DEFAULT_MIN_SCORE = 0.5;
+
 const schema = Joi.object().keys({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
@@ -40,10 +43,32 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       }
     );
 
-    if (!verifyResponse.data.success) {
+    const { success, score, action } = verifyResponse.data ?? {};
+    const minScoreEnv = process.env.RECAPTCHA_MIN_SCORE;
+    const minScore = Number.isFinite(Number(minScoreEnv))
+      ? Number(minScoreEnv)
+      : DEFAULT_MIN_SCORE;
+
+    if (!success) {
       response
         .status(400)
         .send({ error: true, message: "Recaptcha verification failed" });
+      return;
+    }
+
+    if (typeof score === "number" && score < minScore) {
+      response.status(400).send({
+        error: true,
+        message: "Recaptcha score too low",
+      });
+      return;
+    }
+
+    if (action && action !== RECAPTCHA_EXPECTED_ACTION) {
+      response.status(400).send({
+        error: true,
+        message: "Recaptcha action mismatch",
+      });
       return;
     }
   } catch (error) {

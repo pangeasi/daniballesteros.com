@@ -3,7 +3,9 @@ export {};
 declare global {
   interface Window {
     grecaptcha?: {
-      render: (
+      ready: (cb: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+      render?: (
         container: string | HTMLElement,
         parameters: {
           sitekey: string;
@@ -12,8 +14,7 @@ declare global {
           "error-callback"?: () => void;
         }
       ) => number;
-      reset: (opt_widget_id?: number) => void;
+      reset?: (opt_widget_id?: number) => void;
     };
-    onRecaptchaLoadCallback?: () => void;
   }
 }
