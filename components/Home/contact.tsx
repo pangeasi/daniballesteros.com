@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Input } from "../Input";
@@ -15,6 +15,9 @@ type FormValues = yup.InferType<typeof schema>;
 const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [sended, setSend] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const recaptchaWidgetId = useRef<number | null>(null);
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
   const {
     handleSubmit,
     reset,
@@ -23,32 +26,107 @@ const Contact = () => {
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (values) => {
-    setLoading(true);
-    fetch("/api/send", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(values),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        if (data.error) {
-          toast.error(
-            "El envio falló. Puedes intentarlo más tarde, o contactarme a daniballesteros@protonmail.com"
-          );
-        } else {
-          setTimeout(() => {
-            setSend(true);
-            toast.success(
-              "Tu mensaje fue enviado! Te responderé lo antes posible"
-            );
-            reset();
-          }, 1500);
+  useEffect(() => {
+    if (!siteKey) {
+      console.warn("Falta la variable NEXT_PUBLIC_RECAPTCHA_SITE_KEY");
+      return;
+    }
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const loadRecaptcha = () => {
+      if (!window.grecaptcha || recaptchaWidgetId.current !== null) {
+        return;
+      }
+      recaptchaWidgetId.current = window.grecaptcha.render(
+        "recaptcha-container",
+        {
+          sitekey: siteKey,
+          callback: (token: string) => {
+            setCaptchaToken(token);
+          },
+          "expired-callback": () => {
+            setCaptchaToken(null);
+          },
+          "error-callback": () => {
+            setCaptchaToken(null);
+          },
         }
+      );
+    };
+
+    if (window.grecaptcha) {
+      loadRecaptcha();
+    } else {
+      window.onRecaptchaLoadCallback = loadRecaptcha;
+    }
+
+    const scriptId = "recaptcha-script";
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.src =
+        "https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoadCallback&render=explicit";
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+    } else if (window.grecaptcha) {
+      loadRecaptcha();
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.onRecaptchaLoadCallback = undefined;
+      }
+    };
+  }, [siteKey]);
+
+  const onSubmit = async (values: FormValues) => {
+    if (!siteKey) {
+      toast.error("El formulario no está configurado correctamente.");
+      return;
+    }
+    if (!captchaToken) {
+      toast.error("Por favor confirma que no eres un robot.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await fetch("/api/send", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ ...values, token: captchaToken }),
       });
+      const data = await response.json();
+      if (!response.ok || data.error) {
+        toast.error(
+          "El envio falló. Puedes intentarlo más tarde, o contactarme a daniballesteros@protonmail.com"
+        );
+        return;
+      }
+      setTimeout(() => {
+        setSend(true);
+        toast.success(
+          "Tu mensaje fue enviado! Te responderé lo antes posible"
+        );
+        reset();
+      }, 1500);
+    } catch (error) {
+      toast.error(
+        "El envio falló. Puedes intentarlo más tarde, o contactarme a daniballesteros@protonmail.com"
+      );
+    } finally {
+      setLoading(false);
+      setCaptchaToken(null);
+      if (typeof window !== "undefined" && window.grecaptcha) {
+        if (recaptchaWidgetId.current !== null) {
+          window.grecaptcha.reset(recaptchaWidgetId.current);
+        }
+      }
+    }
   };
   return (
     <div className="sm:w-[400px]">
@@ -98,6 +176,7 @@ const Contact = () => {
               </>
             )}
           />
+          <div id="recaptcha-container" className="self-center" />
           <div className="flex justify-end">
             <button
               type="submit"
