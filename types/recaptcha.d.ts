@@ -1,0 +1,20 @@
+export {};
+
+declare global {
+  interface Window {
+    grecaptcha?: {
+      ready: (cb: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+      render?: (
+        container: string | HTMLElement,
+        parameters: {
+          sitekey: string;
+          callback?: (token: string) => void;
+          "expired-callback"?: () => void;
+          "error-callback"?: () => void;
+        }
+      ) => number;
+      reset?: (opt_widget_id?: number) => void;
+    };
+  }
+}
