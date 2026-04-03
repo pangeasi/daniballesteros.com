@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { Resend } from "resend";
 import Joi from "joi";
 import axios from "axios";
@@ -14,7 +14,10 @@ const schema = Joi.object().keys({
   token: Joi.string().required(),
 });
 
-export default async (request: VercelRequest, response: VercelResponse) => {
+export default async function handler(
+  request: NextApiRequest,
+  response: NextApiResponse
+) {
   const result = schema.validate(request.body);
   if (result.error) {
     response.status(402).send({ error: true, message: result.error.message });
@@ -106,4 +109,4 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     console.log("ERROR", error);
     response.status(500).send({ error: true });
   }
-};
+}

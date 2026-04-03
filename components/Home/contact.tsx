@@ -1,16 +1,21 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, type Resolver } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Input } from "../Input";
 import { toast } from "react-toastify";
 
-const schema = yup.object({
+type FormValues = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+const schema: yup.ObjectSchema<FormValues> = yup.object({
   name: yup.string().required("El nombre es requerido"),
   email: yup.string().email().required("El email es requerido"),
   message: yup.string().required("El mensaje es requerido"),
 });
-type FormValues = yup.InferType<typeof schema>;
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -23,7 +28,12 @@ const Contact = () => {
     control,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as Resolver<FormValues>,
+    defaultValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
   });
   useEffect(() => {
     if (!siteKey) {

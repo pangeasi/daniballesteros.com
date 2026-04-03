@@ -1,12 +1,12 @@
-import { forwardRef, LegacyRef } from "react";
+import { forwardRef } from "react";
 
 type Props = {
   size?: number;
   color?: string;
 };
 
-export const Logo = forwardRef(
-  ({ size, color }: Props, ref: LegacyRef<SVGSVGElement>) => {
+export const Logo = forwardRef<SVGSVGElement, Props>(
+  ({ size, color }, ref) => {
     return (
       <svg
         id="Capa_1"
@@ -42,3 +42,5 @@ export const Logo = forwardRef(
     );
   }
 );
+
+Logo.displayName = "Logo";

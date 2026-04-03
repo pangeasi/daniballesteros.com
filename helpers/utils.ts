@@ -1,33 +1,41 @@
 import { MarkdownDetails } from "../types/markdown.type";
 
 const parseValue = (key: string, value: string) => {
-    value = value.trim()
-    switch (key) {
-        case 'published':
-            return value === 'true';
-        case 'date':
-            return new Date(value)
-        case 'tags':
-            return value.split(',')
-        default:
-            return value;
-    }
-} 
+  const normalizedValue = value.trim();
 
-export const getMarkdown = (data) => {
-    let details: MarkdownDetails = {};
-    let content: string;
+  switch (key) {
+    case "published":
+      return normalizedValue === "true";
+    case "date":
+      return new Date(normalizedValue);
+    case "tags":
+      return normalizedValue.split(",");
+    default:
+      return normalizedValue;
+  }
+};
 
-    const detailsFounded = data.match(/---([^---]+)---/)[0]
-    detailsFounded
+export const getMarkdown = (data: string) => {
+  const details: MarkdownDetails = {};
+  let content = data;
+
+  const detailsFounded = data.match(/---([^---]+)---/)?.[0];
+
+  if (!detailsFounded) {
+    return { content, details };
+  }
+
+  detailsFounded
     .split('\n')
     .slice(1, -1)
-    .forEach(l => {
-        let key = l.split(':')[0]
-        let value = l.split(':')[1]
-        details[key] = parseValue(key, value);
-    })
-    content = data.replace(detailsFounded, '')
-    
-    return {content, details}
-}
+    .forEach((line) => {
+      const [rawKey, rawValue = ""] = line.split(":");
+      const key = rawKey as keyof MarkdownDetails;
+
+      details[key] = parseValue(rawKey, rawValue) as never;
+    });
+
+  content = data.replace(detailsFounded, "");
+
+  return { content, details };
+};

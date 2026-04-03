@@ -69,8 +69,9 @@ const Projects = () => {
           <Image
             width={project.width}
             height={project.height}
-            objectFit="cover"
             src={`/images/projects/${project.cover}`}
+            alt={project.title}
+            style={{ objectFit: "cover" }}
           />
           <div>
             <h2 className="text-2xl font-bold">{project.title}</h2>
