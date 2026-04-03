@@ -1,10 +1,11 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import Joi from "joi";
 import axios from "axios";
 
 const RECAPTCHA_EXPECTED_ACTION = "contact";
 const DEFAULT_MIN_SCORE = 0.5;
+const DEFAULT_FROM_EMAIL = "onboarding@daniballesteros.com";
 
 const schema = Joi.object().keys({
   name: Joi.string().required(),
@@ -77,21 +78,24 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     return;
   }
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.USER,
-      pass: process.env.PASS,
-    },
-  });
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    response
+      .status(500)
+      .send({ error: true, message: "Resend API key is not configured" });
+    return;
+  }
+
+  const resend = new Resend(resendApiKey);
 
   try {
     const { name, email, message } = request.body;
-    await transporter.sendMail({
-      from: `"${name} 👻" <${email}>`,
-      to: "daniballesteros@protonmail.com,",
+    await resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL || DEFAULT_FROM_EMAIL,
+      to: ["daniballesteros@protonmail.com"],
+      replyTo: email,
       subject: "Mensaje de mi web",
-      text: "web message",
+      text: `Nombre: ${name}\nCorreo: ${email}\nMensaje: ${message}`,
       html: `
             <p><strong>Nombre: </strong> ${name}</p>
             <p><strong>Correo: </strong> ${email}</p>
@@ -99,7 +103,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     });
     response.status(200).send({ error: false });
   } catch (error) {
-    console.log("ERROR", error, process.env.USER);
+    console.log("ERROR", error);
     response.status(500).send({ error: true });
   }
 };
